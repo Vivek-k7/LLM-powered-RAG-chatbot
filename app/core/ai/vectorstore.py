@@ -9,7 +9,8 @@ load_dotenv()
 
 CHROMA_PATH = Path(os.environ["CHROMA_PATH"])
 
-
+# initializes the embedding model and loads the persisted Chroma vector store
+# returns a retriever configured to fetch the top-k relevant chunks
 def get_retriever():
     embeddings = OllamaEmbeddings(
         model="nomic-embed-text"
