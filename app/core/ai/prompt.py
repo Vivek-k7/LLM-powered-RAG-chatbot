@@ -14,12 +14,29 @@ If the answer cannot be found in the documents, respond with:
 Be concise, clear, and factual.
 """
 
+SYSTEM_PROMPT_2 = """
+<document> 
+{WHOLE_DOCUMENT} 
+</document> 
+Here is the chunk we want to situate within the whole document 
+<chunk> 
+{CHUNK_CONTENT} 
+</chunk> 
+Please give a short succinct context to situate this chunk within the overall document for the purposes of improving search retrieval of the chunk. Answer only with the succinct context and nothing else. 
+"""
+
+
+def get_chunk_context_prompt():
+    return ChatPromptTemplate.from_messages([
+        ("system", SYSTEM_PROMPT_2)
+    ])
+
 # receives context (from vector search) and history (from Postgres) 
 # RAG pipeline along with chathistory yet to be implemented.
 def get_prompt():
     return ChatPromptTemplate.from_messages([
         ("system", SYSTEM_PROMPT),
         ("system", "Context from documents:\n{context}"),
-        ("system", "Conversation history:\n{history}"),
         ("human", "{query}")
     ])
+
